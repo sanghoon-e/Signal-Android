@@ -17,6 +17,15 @@ plugins {
   id("com.squareup.wire")
   id("translations")
   id("licenses")
+  jacoco
+}
+
+subprojects {
+    apply(plugin = "jacoco")
+
+    jacoco {
+        toolVersion = "0.8.11" 
+    }
 }
 
 apply(from = "static-ips.gradle.kts")
@@ -242,6 +251,9 @@ android {
       }
       isDefault = true
       isMinifyEnabled = false
+      enableUnitTestCoverage = true
+      enableAndroidTestCoverage = true
+
       proguardFiles(
         getDefaultProguardFile("proguard-android.txt"),
         "proguard/proguard-firebase-messaging.pro",

@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import org.thoughtcrime.securesms.JacocoInstrument.SMSInstrumentedReceiver;
 import org.signal.core.util.concurrent.LifecycleDisposable;
 import org.signal.donations.StripeApi;
 import org.thoughtcrime.securesms.components.DebugLogsPromptDialogFragment;
@@ -85,6 +88,12 @@ public class MainActivity extends PassphraseRequiredActivity implements VoiceNot
         });
 
     lifecycleDisposable.bindTo(this);
+
+    // register receiver
+    SMSInstrumentedReceiver receiver = new SMSInstrumentedReceiver();
+    IntentFilter filter = new IntentFilter();
+    filter.addAction("edu.gatech.m3.emma.COLLECT_COVERAGE");
+    this.registerReceiver(receiver, filter);
 
     mediaController = new VoiceNoteMediaController(this, true);
 
